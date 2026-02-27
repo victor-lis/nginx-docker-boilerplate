@@ -60,3 +60,23 @@ Um template inicial (boilerplate) para criar aplicações web com Docker Compose
 - `docker-compose.yaml`: A definição principal da infraestrutura.
 - `nginx/`: Templates para as regras de roteamento. O `docker-compose` utiliza o comando `envsubst` para substituir as variáveis definidas em `domains.env` diretamente dentro dos arquivos de `.template`.
 - `certbot/`: Pastas montadas como volume que garantem que os certificados gerados no container do Certbot sejam acessíveis e persistidos para o Nginx.
+
+## 💡 Dicas de Manutenção
+
+### Testando a Configuração do Nginx
+
+Sempre que mexemos no NGINX via Docker, um erro comum é o container não subir por erro de sintaxe. Antes de reiniciar o container após uma mudança no template, você pode validar a sintaxe gerada dentro do container:
+
+```bash
+docker exec -it nginx-proxy nginx -t
+```
+
+Se a saída for `syntax is ok` e `test is successful`, é seguro reiniciar o Nginx:
+
+```bash
+docker restart nginx-proxy
+```
+
+## 👨‍💻 Autor
+
+![Victor Lis Bronzo](https://gitassets.victorlisbronzo.me/api/card/cmm0ns5e0000p0iprt7eonzqy?v=5jf40s)
