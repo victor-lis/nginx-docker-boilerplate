@@ -1,0 +1,35 @@
+services:
+  nginx:
+    container_name: nginx-proxy
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf.template:/etc/nginx/templates/nginx.conf.template
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      # - ./nginx/nginx.conf.template.local:/etc/nginx/templates/nginx.conf.template
+    env_file:
+      - ./nginx/domains.env
+    networks:
+      - app-network
+    command: >
+      /bin/sh -c "envsubst '$$API_DOMAIN $$APP_DOMAIN' < /etc/nginx/templates/nginx.conf.template > /etc/nginx/conf.d/default.conf
+      && nginx -g 'daemon off;'"
+    restart: unless-stopped
+
+  certbot:
+    container_name: certbot-ssl
+    image: certbot/certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

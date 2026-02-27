@@ -1,0 +1,18 @@
+# Environment files
+nginx/domains.env
+
+# Certbot directories (ignore generated certificates and webroot contents)
+certbot/conf/*
+!certbot/conf/.gitkeep
+certbot/www/*
+!certbot/www/.gitkeep
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS System Files
+.DS_Store
+Thumbs.db
